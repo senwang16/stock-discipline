@@ -1,0 +1,48 @@
+name: update
+
+# 每个交易日收盘后自动取数、重算触发、写回 data/。
+# 公开仓库的 Actions 不计费，无需任何 secret。
+# 也可在仓库 Actions 页手动 Run workflow（对应管理面板的「立即运行」）。
+
+on:
+  schedule:
+    # cron 用 UTC。北京时间 = UTC + 8。
+    - cron: "40 7 * * 1-5"    # 北京 15:40（收盘后）
+    - cron: "0 11 * * 1-5"    # 北京 19:00（晚间补一次，防上游延迟）
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# 同一时间只跑一个，避免并发推送冲突
+concurrency:
+  group: update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Run core.py
+        run: python3 core.py
+
+      - name: Commit data/
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/
+          if git diff --staged --quiet; then
+            echo "data/ 无变化，跳过提交"
+          else
+            git commit -m "chore(data): 更新行情与触发快照 $(date -u +%Y-%m-%dT%H:%MZ)"
+            git push
+          fi
