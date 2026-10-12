@@ -118,7 +118,7 @@
   </section>
 
   <footer>
-    <div>数据来源：腾讯行情（价格，非逐笔实时）· 东方财富分红送配（分红）。日频更新，由仓库的 GitHub Actions 定时生成。</div>
+    <div>数据来源：腾讯行情（价格，非逐笔实时）· 东方财富分红送配（分红）。日频更新，由仓库的 GitHub Actions 定时生成；页面每 60 秒自动拉取一次，切回标签页时也会立刻刷新。</div>
     <div>股息率 = 每股分红 ÷ 当前股价；触发价 = 每股分红 ÷ 目标股息率，均按当次分红数据现算。触发判断用年度口径。</div>
     <div>本页面只做纪律核对，不构成投资建议，不自动交易。</div>
   </footer>
@@ -227,8 +227,8 @@ function renderState(st){
   renderAlerts(st);
 }
 
-async function load(){
-  $('btnRefresh').textContent = '载入中…';
+async function load(silent){
+  if (!silent) $('btnRefresh').textContent = '载入中…';
   try{
     const r = await fetch('data/latest.json?t=' + Date.now());
     if (!r.ok) throw new Error('HTTP ' + r.status);
@@ -241,13 +241,14 @@ async function load(){
     $('alerts').innerHTML = '<div class="empty">读取 data/latest.json 失败：' + e.message +
       '（首次部署需先让 Actions 跑一次，或本地执行 python3 core.py 生成数据）</div>';
   }finally{
-    $('btnRefresh').textContent = '重新载入';
+    if (!silent) $('btnRefresh').textContent = '重新载入';
   }
 }
 
-// 面板改了本地持仓后，回到本页自动刷新
-window.addEventListener('focus', () => { if (STATE) renderState(STATE); });
-$('btnRefresh').onclick = load;
+$('btnRefresh').onclick = () => load();
+// 每 60 秒自动拉一次；切回标签页时也立刻拉一次
+setInterval(() => load(true), 60000);
+window.addEventListener('focus', () => load(true));
 load();
 </script>
 </body>
