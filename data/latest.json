@@ -1,0 +1,538 @@
+{
+ "ts": "2026-10-12T07:05:21",
+ "quote_date": "2026-10-12",
+ "settings": {
+  "position_cap": 0.2,
+  "cash": null,
+  "emergency_reserve": null
+ },
+ "active_count": 0,
+ "targets": [
+  {
+   "code": "601398",
+   "name": "工商银行",
+   "category": "银行",
+   "held": true,
+   "role": "核心收息底仓",
+   "price": 8.44,
+   "change_pct": 2.68,
+   "quote_time": "20261012150515",
+   "div_year": "2025",
+   "div_annual": 0.3103,
+   "div_ttm": 0.3103,
+   "yield_annual": 3.68,
+   "yield_ttm": 3.68,
+   "triggers": [
+    {
+     "kind": "buy",
+     "metric": "股息率",
+     "threshold": "≥4.50%",
+     "action": "进入观察区，准备分批",
+     "active": false,
+     "trigger_price": 6.9
+    },
+    {
+     "kind": "buy",
+     "metric": "股息率",
+     "threshold": "≥5.00%",
+     "action": "重点买入区，可分批建仓",
+     "active": false,
+     "trigger_price": 6.21
+    },
+    {
+     "kind": "sell",
+     "metric": "股息率",
+     "threshold": "<3.00%",
+     "action": "估值偏高，评估是否部分止盈",
+     "active": false,
+     "trigger_price": 10.35
+    }
+   ],
+   "next_trigger": {
+    "target_yield": 0.045,
+    "price": 6.9
+   },
+   "note": "核心底仓，默认不卖，只在极端高估或分红恶化时提醒",
+   "div_note": null
+  },
+  {
+   "code": "000001",
+   "name": "平安银行",
+   "category": "银行",
+   "held": true,
+   "role": "打新门票+吃息",
+   "price": 11.73,
+   "change_pct": 1.21,
+   "quote_time": "20261012150515",
+   "div_year": "2025",
+   "div_annual": 0.596,
+   "div_ttm": 0.845,
+   "yield_annual": 5.08,
+   "yield_ttm": 7.2,
+   "triggers": [
+    {
+     "kind": "buy",
+     "metric": "股息率",
+     "threshold": "≥5.50%",
+     "action": "评估是否加仓打新底仓",
+     "active": false,
+     "trigger_price": 10.83
+    },
+    {
+     "kind": "buy",
+     "metric": "价格",
+     "threshold": "≤10.50",
+     "action": "评估是否加仓打新底仓",
+     "active": false,
+     "trigger_price": 10.5
+    },
+    {
+     "kind": "watch",
+     "metric": "价格",
+     "threshold": "≤9.00",
+     "action": "接近成本，评估打新底仓是否安全",
+     "active": false,
+     "trigger_price": 9.0
+    },
+    {
+     "kind": "sell",
+     "metric": "股息率",
+     "threshold": "<4.00%",
+     "action": "收息性价比下降",
+     "active": false,
+     "trigger_price": 14.9
+    }
+   ],
+   "next_trigger": {
+    "target_yield": 0.055,
+    "price": 10.83
+   },
+   "note": null,
+   "div_note": "两口径差异大（除息节奏错位），触发判断以年度口径为准"
+  },
+  {
+   "code": "600010",
+   "name": "包钢股份",
+   "category": "周期",
+   "held": true,
+   "role": "周期弹性仓，必须止盈",
+   "price": 2.12,
+   "change_pct": 0.0,
+   "quote_time": "20261012150511",
+   "div_year": "2024",
+   "div_annual": 0.002,
+   "div_ttm": 0.0,
+   "yield_annual": 0.09,
+   "yield_ttm": null,
+   "triggers": [
+    {
+     "kind": "watch",
+     "metric": "价格",
+     "threshold": "≤2.00",
+     "action": "观察是否接回",
+     "active": false,
+     "trigger_price": 2.0
+    },
+    {
+     "kind": "watch",
+     "metric": "价格",
+     "threshold": "≤1.80",
+     "action": "重点观察接回机会",
+     "active": false,
+     "trigger_price": 1.8
+    },
+    {
+     "kind": "sell",
+     "metric": "价格",
+     "threshold": "≥2.50",
+     "action": "减仓一半或至少1/3",
+     "active": false,
+     "trigger_price": 2.5
+    },
+    {
+     "kind": "sell",
+     "metric": "价格",
+     "threshold": "≥3.00",
+     "action": "清仓或大幅减仓",
+     "active": false,
+     "trigger_price": 3.0
+    }
+   ],
+   "next_trigger": null,
+   "note": "接回优先级低于止盈；不按股息率，不补成重仓",
+   "div_note": null
+  },
+  {
+   "code": "601633",
+   "name": "长城汽车",
+   "category": "汽车",
+   "held": true,
+   "role": "困境反转试验仓，按网格补",
+   "price": 14.22,
+   "change_pct": 3.19,
+   "quote_time": "20261012150502",
+   "div_year": "2025",
+   "div_annual": 0.35,
+   "div_ttm": 0.35,
+   "yield_annual": 2.46,
+   "yield_ttm": 2.46,
+   "triggers": [
+    {
+     "kind": "buy",
+     "metric": "价格",
+     "threshold": "≤12.50",
+     "action": "按计划买入200股",
+     "active": false,
+     "trigger_price": 12.5
+    },
+    {
+     "kind": "buy",
+     "metric": "价格",
+     "threshold": "≤11.50",
+     "action": "可买入300~500股",
+     "active": false,
+     "trigger_price": 11.5
+    },
+    {
+     "kind": "buy",
+     "metric": "价格",
+     "threshold": "≤11.00",
+     "action": "可买入500~1000股，先检查总补仓上限",
+     "active": false,
+     "trigger_price": 11.0
+    },
+    {
+     "kind": "sell",
+     "metric": "价格",
+     "threshold": "≥16.48",
+     "action": "评估是否减仓（不要无脑卖）",
+     "active": false,
+     "trigger_price": 16.484
+    }
+   ],
+   "next_trigger": null,
+   "note": "只按价格网格，不看股息率",
+   "div_note": null
+  },
+  {
+   "code": "601328",
+   "name": "交通银行",
+   "category": "银行",
+   "held": false,
+   "role": "",
+   "price": 7.89,
+   "change_pct": 1.41,
+   "quote_time": "20261012150517",
+   "div_year": "2025",
+   "div_annual": 0.3247,
+   "div_ttm": 0.3247,
+   "yield_annual": 4.12,
+   "yield_ttm": 4.12,
+   "triggers": [
+    {
+     "kind": "buy",
+     "metric": "股息率",
+     "threshold": "≥4.50%",
+     "action": "进入观察区",
+     "active": false,
+     "trigger_price": 7.22
+    },
+    {
+     "kind": "buy",
+     "metric": "股息率",
+     "threshold": "≥5.00%",
+     "action": "重点买入区",
+     "active": false,
+     "trigger_price": 6.5
+    }
+   ],
+   "next_trigger": {
+    "target_yield": 0.045,
+    "price": 7.22
+   },
+   "note": null,
+   "div_note": null
+  },
+  {
+   "code": "601288",
+   "name": "农业银行",
+   "category": "银行",
+   "held": false,
+   "role": "",
+   "price": 7.19,
+   "change_pct": 3.01,
+   "quote_time": "20261012150517",
+   "div_year": "2025",
+   "div_annual": 0.2495,
+   "div_ttm": 0.2495,
+   "yield_annual": 3.47,
+   "yield_ttm": 3.47,
+   "triggers": [
+    {
+     "kind": "buy",
+     "metric": "股息率",
+     "threshold": "≥5.00%",
+     "action": "纳入银行股比价",
+     "active": false,
+     "trigger_price": 4.99
+    }
+   ],
+   "next_trigger": {
+    "target_yield": 0.05,
+    "price": 4.99
+   },
+   "note": null,
+   "div_note": null
+  },
+  {
+   "code": "601939",
+   "name": "建设银行",
+   "category": "银行",
+   "held": false,
+   "role": "",
+   "price": 11.31,
+   "change_pct": 3.01,
+   "quote_time": "20261012150518",
+   "div_year": "2025",
+   "div_annual": 0.3887,
+   "div_ttm": 0.3887,
+   "yield_annual": 3.44,
+   "yield_ttm": 3.44,
+   "triggers": [
+    {
+     "kind": "buy",
+     "metric": "股息率",
+     "threshold": "≥5.00%",
+     "action": "纳入银行股比价",
+     "active": false,
+     "trigger_price": 7.78
+    }
+   ],
+   "next_trigger": {
+    "target_yield": 0.05,
+    "price": 7.78
+   },
+   "note": null,
+   "div_note": null
+  },
+  {
+   "code": "601988",
+   "name": "中国银行",
+   "category": "银行",
+   "held": false,
+   "role": "",
+   "price": 6.97,
+   "change_pct": 2.95,
+   "quote_time": "20261012150517",
+   "div_year": "2025",
+   "div_annual": 0.2263,
+   "div_ttm": 0.2263,
+   "yield_annual": 3.25,
+   "yield_ttm": 3.25,
+   "triggers": [
+    {
+     "kind": "buy",
+     "metric": "股息率",
+     "threshold": "≥5.00%",
+     "action": "纳入银行股比价",
+     "active": false,
+     "trigger_price": 4.53
+    }
+   ],
+   "next_trigger": {
+    "target_yield": 0.05,
+    "price": 4.53
+   },
+   "note": null,
+   "div_note": null
+  },
+  {
+   "code": "600900",
+   "name": "长江电力",
+   "category": "电力",
+   "held": false,
+   "role": "",
+   "price": 29.38,
+   "change_pct": 1.35,
+   "quote_time": "20261012150509",
+   "div_year": "2025",
+   "div_annual": 1.0,
+   "div_ttm": 1.0,
+   "yield_annual": 3.4,
+   "yield_ttm": 3.4,
+   "triggers": [
+    {
+     "kind": "buy",
+     "metric": "股息率",
+     "threshold": "≥4.00%",
+     "action": "进入观察区",
+     "active": false,
+     "trigger_price": 24.97
+    },
+    {
+     "kind": "buy",
+     "metric": "股息率",
+     "threshold": "≥4.50%",
+     "action": "重点买入区",
+     "active": false,
+     "trigger_price": 22.2
+    }
+   ],
+   "next_trigger": {
+    "target_yield": 0.04,
+    "price": 24.97
+   },
+   "note": null,
+   "div_note": null
+  },
+  {
+   "code": "601985",
+   "name": "中国核电",
+   "category": "电力",
+   "held": false,
+   "role": "",
+   "price": 9.17,
+   "change_pct": 0.66,
+   "quote_time": "20261012150502",
+   "div_year": "2025",
+   "div_annual": 0.18,
+   "div_ttm": 0.18,
+   "yield_annual": 1.96,
+   "yield_ttm": 1.96,
+   "triggers": [
+    {
+     "kind": "buy",
+     "metric": "股息率",
+     "threshold": "≥3.00%",
+     "action": "进入观察区",
+     "active": false,
+     "trigger_price": 5.99
+    },
+    {
+     "kind": "buy",
+     "metric": "股息率",
+     "threshold": "≥3.50%",
+     "action": "重点买入区",
+     "active": false,
+     "trigger_price": 5.14
+    }
+   ],
+   "next_trigger": {
+    "target_yield": 0.03,
+    "price": 5.99
+   },
+   "note": null,
+   "div_note": null
+  },
+  {
+   "code": "600025",
+   "name": "华能水电",
+   "category": "电力",
+   "held": false,
+   "role": "",
+   "price": 10.18,
+   "change_pct": 0.69,
+   "quote_time": "20261012150504",
+   "div_year": "2025",
+   "div_annual": 0.205,
+   "div_ttm": 0.205,
+   "yield_annual": 2.01,
+   "yield_ttm": 2.01,
+   "triggers": [
+    {
+     "kind": "buy",
+     "metric": "股息率",
+     "threshold": "≥3.50%",
+     "action": "进入观察区",
+     "active": false,
+     "trigger_price": 5.85
+    }
+   ],
+   "next_trigger": {
+    "target_yield": 0.035,
+    "price": 5.85
+   },
+   "note": null,
+   "div_note": null
+  },
+  {
+   "code": "600028",
+   "name": "中国石化",
+   "category": "能源",
+   "held": false,
+   "role": "",
+   "price": 5.43,
+   "change_pct": 0.74,
+   "quote_time": "20261012150515",
+   "div_year": "2025",
+   "div_annual": 0.2,
+   "div_ttm": 0.217,
+   "yield_annual": 3.68,
+   "yield_ttm": 4.0,
+   "triggers": [
+    {
+     "kind": "buy",
+     "metric": "股息率",
+     "threshold": "≥5.00%",
+     "action": "进入观察区",
+     "active": false,
+     "trigger_price": 4.0
+    },
+    {
+     "kind": "buy",
+     "metric": "股息率",
+     "threshold": "≥5.50%",
+     "action": "重点买入区",
+     "active": false,
+     "trigger_price": 3.63
+    }
+   ],
+   "next_trigger": {
+    "target_yield": 0.05,
+    "price": 4.0
+   },
+   "note": null,
+   "div_note": null
+  },
+  {
+   "code": "600938",
+   "name": "中国海油",
+   "category": "能源",
+   "held": false,
+   "role": "",
+   "price": 33.96,
+   "change_pct": 0.41,
+   "quote_time": "20261012150502",
+   "div_year": "2025",
+   "div_annual": 1.1449,
+   "div_ttm": 1.1449,
+   "yield_annual": 3.37,
+   "yield_ttm": 3.37,
+   "triggers": [
+    {
+     "kind": "buy",
+     "metric": "股息率",
+     "threshold": "≥5.00%",
+     "action": "进入观察区",
+     "active": false,
+     "trigger_price": 22.89
+    },
+    {
+     "kind": "buy",
+     "metric": "股息率",
+     "threshold": "≥5.50%",
+     "action": "重点买入区",
+     "active": false,
+     "trigger_price": 20.81
+    }
+   ],
+   "next_trigger": {
+    "target_yield": 0.05,
+    "price": 22.89
+   },
+   "note": null,
+   "div_note": null
+  }
+ ],
+ "history_days": 1
+}
