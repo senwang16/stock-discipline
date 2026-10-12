@@ -223,6 +223,8 @@ function renderState(st){
       ${items}${dn}${own}
     </div>`;
   }).join('');
+
+  renderAlerts(st);
 }
 
 async function load(){
