@@ -1,0 +1,141 @@
+{
+  "settings": {
+    "position_cap": 0.20,
+    "cash": null,
+    "emergency_reserve": null,
+    "dividend_basis": "annual",
+    "note": "settings 里的 cash / emergency_reserve 填上数字后，风控口径才会从「占股票市值」切换为「占(股票+现金)」。"
+  },
+  "targets": [
+    {
+      "code": "601398",
+      "name": "工商银行",
+      "category": "银行",
+      "held": true,
+      "role": "核心收息底仓",
+      "rules": {
+        "buy_yield": [[0.045, "进入观察区，准备分批"], [0.05, "重点买入区，可分批建仓"]],
+        "sell_yield_below": [[0.03, "估值偏高，评估是否部分止盈"]],
+        "note": "核心底仓，默认不卖，只在极端高估或分红恶化时提醒"
+      }
+    },
+    {
+      "code": "000001",
+      "name": "平安银行",
+      "category": "银行",
+      "held": true,
+      "role": "打新门票+吃息",
+      "rules": {
+        "buy_yield": [[0.055, "评估是否加仓打新底仓"]],
+        "buy_price": [[10.5, "评估是否加仓打新底仓"]],
+        "watch_price": [[9.0, "接近成本，评估打新底仓是否安全"]],
+        "sell_yield_below": [[0.04, "收息性价比下降"]]
+      }
+    },
+    {
+      "code": "600010",
+      "name": "包钢股份",
+      "category": "周期",
+      "held": true,
+      "role": "周期弹性仓，必须止盈",
+      "rules": {
+        "watch_price": [[2.0, "观察是否接回"], [1.8, "重点观察接回机会"]],
+        "sell_price_above": [[2.5, "减仓一半或至少1/3"], [3.0, "清仓或大幅减仓"]],
+        "note": "接回优先级低于止盈；不按股息率，不补成重仓"
+      }
+    },
+    {
+      "code": "601633",
+      "name": "长城汽车",
+      "category": "汽车",
+      "held": true,
+      "role": "困境反转试验仓，按网格补",
+      "rules": {
+        "buy_price": [[12.5, "按计划买入200股"], [11.5, "可买入300~500股"], [11.0, "可买入500~1000股，先检查总补仓上限"]],
+        "sell_price_above": [[16.484, "评估是否减仓（不要无脑卖）"]],
+        "note": "只按价格网格，不看股息率"
+      }
+    },
+    {
+      "code": "601328",
+      "name": "交通银行",
+      "category": "银行",
+      "held": false,
+      "rules": {
+        "buy_yield": [[0.045, "进入观察区"], [0.05, "重点买入区"]]
+      }
+    },
+    {
+      "code": "601288",
+      "name": "农业银行",
+      "category": "银行",
+      "held": false,
+      "rules": {
+        "buy_yield": [[0.05, "纳入银行股比价"]]
+      }
+    },
+    {
+      "code": "601939",
+      "name": "建设银行",
+      "category": "银行",
+      "held": false,
+      "rules": {
+        "buy_yield": [[0.05, "纳入银行股比价"]]
+      }
+    },
+    {
+      "code": "601988",
+      "name": "中国银行",
+      "category": "银行",
+      "held": false,
+      "rules": {
+        "buy_yield": [[0.05, "纳入银行股比价"]]
+      }
+    },
+    {
+      "code": "600900",
+      "name": "长江电力",
+      "category": "电力",
+      "held": false,
+      "rules": {
+        "buy_yield": [[0.04, "进入观察区"], [0.045, "重点买入区"]]
+      }
+    },
+    {
+      "code": "601985",
+      "name": "中国核电",
+      "category": "电力",
+      "held": false,
+      "rules": {
+        "buy_yield": [[0.03, "进入观察区"], [0.035, "重点买入区"]]
+      }
+    },
+    {
+      "code": "600025",
+      "name": "华能水电",
+      "category": "电力",
+      "held": false,
+      "rules": {
+        "buy_yield": [[0.035, "进入观察区"]]
+      }
+    },
+    {
+      "code": "600028",
+      "name": "中国石化",
+      "category": "能源",
+      "held": false,
+      "rules": {
+        "buy_yield": [[0.05, "进入观察区"], [0.055, "重点买入区"]]
+      }
+    },
+    {
+      "code": "600938",
+      "name": "中国海油",
+      "category": "能源",
+      "held": false,
+      "rules": {
+        "buy_yield": [[0.05, "进入观察区"], [0.055, "重点买入区"]]
+      }
+    }
+  ]
+}
