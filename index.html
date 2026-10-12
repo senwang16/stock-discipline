@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>股票纪律看板</title>
+<style>
+  :root{
+    --bg:#f5f6f8; --card:#fff; --line:#e6e8eb; --txt:#1f2329; --sub:#8a9099;
+    --up:#d93025; --down:#0f9d58; --warn:#b8860b; --warnbg:#fff8e6;
+    --buy:#c0392b; --sell:#1a73e8; --watch:#7a5c00;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);
+    font:14px/1.55 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+  .wrap{max-width:1240px;margin:0 auto;padding:20px 16px 60px}
+  header{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;
+    padding:16px 18px;background:var(--card);border:1px solid var(--line);border-radius:12px}
+  h1{font-size:17px;margin:0;font-weight:600}
+  .meta{display:flex;flex-wrap:wrap;gap:18px;align-items:center;color:var(--sub);font-size:12.5px}
+  .meta b{color:var(--txt);font-weight:600}
+  .btns{display:flex;gap:8px;align-items:center}
+  button,a.btn{border:1px solid var(--line);background:#fff;color:var(--txt);border-radius:8px;
+    padding:7px 14px;font-size:13px;cursor:pointer;text-decoration:none;display:inline-block}
+  button:hover,a.btn:hover{background:#f0f2f5}
+  button.primary,a.btn.primary{background:#1f2329;color:#fff;border-color:#1f2329}
+  .pill{padding:2px 8px;border-radius:20px;font-size:12px;background:#eef0f3;color:var(--sub)}
+  .pill.on{background:var(--warnbg);color:var(--warn);font-weight:600}
+  section{margin-top:16px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .sec-hd{padding:12px 18px;border-bottom:1px solid var(--line);font-weight:600;font-size:14px;
+    display:flex;justify-content:space-between;align-items:center}
+  .sec-hd span{font-weight:400;color:var(--sub);font-size:12.5px}
+  table{width:100%;border-collapse:collapse}
+  th,td{padding:10px 12px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--line)}
+  th{font-size:12px;color:var(--sub);font-weight:500;background:#fafbfc;position:sticky;top:0}
+  th:first-child,td:first-child{text-align:left}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr.hit{background:var(--warnbg)}
+  .name{font-weight:600}
+  .code{color:var(--sub);font-size:12px;margin-left:6px;font-weight:400}
+  .role{color:var(--sub);font-size:12px;font-weight:400}
+  .num{font-variant-numeric:tabular-nums}
+  .up{color:var(--up)} .down{color:var(--down)} .sub{color:var(--sub)}
+  .rate{font-weight:600}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px;padding:14px 18px}
+  .rule{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fcfcfd}
+  .rule .t{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+  .rule .item{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;padding:3px 0;color:#5b6169}
+  .rule .item.active{color:var(--txt);font-weight:600}
+  .tag{flex:0 0 auto;border-radius:4px;padding:0 6px;font-size:11px;line-height:18px;
+    background:#eef0f3;color:var(--sub)}
+  .tag.buy{background:#fdecea;color:var(--buy)}
+  .tag.sell{background:#e8f0fe;color:var(--sell)}
+  .tag.watch{background:#fdf3d8;color:var(--watch)}
+  .alerts{padding:14px 18px;display:grid;gap:8px}
+  .alert{border-left:3px solid var(--warn);background:var(--warnbg);padding:9px 12px;border-radius:6px;font-size:13px}
+  .alert.sell{border-left-color:var(--sell);background:#eff4fe}
+  .empty{padding:22px 18px;color:var(--sub);font-size:13px}
+  .hint{background:#eef2f7;border-radius:8px;padding:8px 12px;margin:0 18px 12px;font-size:12px;color:#4a5568}
+  footer{margin-top:16px;color:var(--sub);font-size:12px;line-height:1.8;padding:0 4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>股票纪律看板</h1>
+      <div class="meta" style="margin-top:6px">
+        <span>数据时间 <b id="ts">—</b></span>
+        <span>持仓市值 <b id="stockValue">—</b></span>
+        <span>触发中 <b id="activeCount">—</b></span>
+        <span>历史快照 <b id="histDays">—</b> 天</span>
+      </div>
+    </div>
+    <div class="btns">
+      <a class="btn" href="panel.html">管理面板</a>
+      <button id="btnRefresh" class="primary">重新载入</button>
+    </div>
+  </header>
+
+  <section>
+    <div class="sec-hd">触发提醒 <span>仅列出当前已生效的条件</span></div>
+    <div id="alerts" class="alerts"></div>
+  </section>
+
+  <section>
+    <div class="sec-hd">持仓 <span>触发判断用年度口径股息率</span></div>
+    <div id="holdHint" class="hint" style="display:none">
+      还没填写持仓股数与成本，市值 / 盈亏 / 占比 留空。去<a href="panel.html">管理面板</a>填一次即可——只存在你这台设备的浏览器里，不会进仓库。
+    </div>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr>
+          <th>标的</th><th>现价</th><th>涨跌</th><th>成本</th><th>盈亏</th>
+          <th>股数</th><th>市值</th><th>占比</th><th>年度股息率</th><th>滚动12月</th><th>下一档触发价</th>
+        </tr></thead>
+        <tbody id="holdings"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-hd">比价 / 狙击池 <span>未持仓，仅监控触发价</span></div>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr>
+          <th>标的</th><th>分类</th><th>现价</th><th>涨跌</th>
+          <th>年度股息率</th><th>滚动12月</th><th>下一档触发价</th>
+        </tr></thead>
+        <tbody id="watchlist"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-hd">规则明细 <span>全部来自 config.json，改配置即生效</span></div>
+    <div id="rules" class="grid"></div>
+  </section>
+
+  <footer>
+    <div>数据来源：腾讯行情（价格，非逐笔实时）· 东方财富分红送配（分红）。日频更新，由仓库的 GitHub Actions 定时生成。</div>
+    <div>股息率 = 每股分红 ÷ 当前股价；触发价 = 每股分红 ÷ 目标股息率，均按当次分红数据现算。触发判断用年度口径。</div>
+    <div>本页面只做纪律核对，不构成投资建议，不自动交易。</div>
+  </footer>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const LS = 'sd.holdings';
+const fmt = (v, d=2) => (v === null || v === undefined) ? '—' : Number(v).toFixed(d);
+const money = v => (v === null || v === undefined) ? '—' : Number(v).toLocaleString('zh-CN', {maximumFractionDigits:0});
+const pct = v => (v === null || v === undefined) ? '—' : fmt(v) + '%';
+const chgCls = v => (v === null || v === undefined) ? 'sub' : (v > 0 ? 'up' : (v < 0 ? 'down' : 'sub'));
+const chgTxt = v => (v === null || v === undefined) ? '—' : (v > 0 ? '+' : '') + fmt(v) + '%';
+
+function localHoldings(){
+  try { return JSON.parse(localStorage.getItem(LS) || '{}') || {}; } catch(e){ return {}; }
+}
+
+let STATE = null;
+
+function renderAlerts(st){
+  const rows = [];
+  st.targets.forEach(it => (it.triggers || []).forEach(t => {
+    if (t.active) rows.push({it, t});
+  }));
+  if (!rows.length){ $('alerts').innerHTML = '<div class="empty">当前没有任何条件触发。</div>'; return; }
+  $('alerts').innerHTML = rows.map(({it,t}) =>
+    `<div class="alert ${t.kind === 'sell' ? 'sell' : ''}">
+      <b>${it.name}</b>（${it.code}）现价 ${fmt(it.price)}　
+      条件 ${t.metric}${t.threshold} 已满足　→　<b>${t.action}</b>
+    </div>`).join('');
+}
+
+function triggerCell(it){
+  if (it.next_trigger) return fmt(it.next_trigger.price) +
+    ' <span class="sub">(' + fmt(it.next_trigger.target_yield*100,1) + '%)</span>';
+  return '—';
+}
+
+function renderState(st){
+  const lh = localHoldings();
+  const held = st.targets.filter(t => t.held);
+  const watch = st.targets.filter(t => !t.held);
+
+  // 先算持仓市值
+  let total = 0, anyLocal = false;
+  held.forEach(t => {
+    const p = lh[t.code];
+    if (p && p.shares && t.price){ total += p.shares * t.price; anyLocal = true; }
+  });
+  $('stockValue').textContent = anyLocal ? money(total) : '—';
+  $('holdHint').style.display = anyLocal ? 'none' : '';
+
+  $('holdings').innerHTML = held.map(t => {
+    const p = lh[t.code] || {};
+    const hit = (t.triggers||[]).some(x => x.active);
+    const mv = (p.shares && t.price) ? p.shares * t.price : null;
+    const pnl = (p.cost && t.price) ? (t.price / p.cost - 1) * 100 : null;
+    const w = (mv && total) ? mv / total * 100 : null;
+    return `<tr class="${hit ? 'hit' : ''}">
+      <td><span class="name">${t.name}</span><span class="code">${t.code}</span>
+          <div class="role">${t.role||''}</div></td>
+      <td class="num">${fmt(t.price)}</td>
+      <td class="num ${chgCls(t.change_pct)}">${chgTxt(t.change_pct)}</td>
+      <td class="num sub">${p.cost ? fmt(p.cost,3) : '—'}</td>
+      <td class="num ${chgCls(pnl)}">${chgTxt(pnl)}</td>
+      <td class="num sub">${p.shares ? money(p.shares) : '—'}</td>
+      <td class="num">${money(mv)}</td>
+      <td class="num ${(w||0) > (st.settings.position_cap||0.2)*100 ? 'up' : ''}">${pct(w)}</td>
+      <td class="num rate">${pct(t.yield_annual)}</td>
+      <td class="num sub">${pct(t.yield_ttm)}</td>
+      <td class="num">${triggerCell(t)}</td>
+    </tr>`;
+  }).join('');
+
+  $('watchlist').innerHTML = watch.map(t => {
+    const hit = (t.triggers||[]).some(x => x.active);
+    return `<tr class="${hit ? 'hit' : ''}">
+      <td><span class="name">${t.name}</span><span class="code">${t.code}</span></td>
+      <td class="sub">${t.category||''}</td>
+      <td class="num">${fmt(t.price)}</td>
+      <td class="num ${chgCls(t.change_pct)}">${chgTxt(t.change_pct)}</td>
+      <td class="num rate">${pct(t.yield_annual)}</td>
+      <td class="num sub">${pct(t.yield_ttm)}</td>
+      <td class="num">${triggerCell(t)}</td>
+    </tr>`;
+  }).join('');
+
+  $('rules').innerHTML = st.targets.map(it => {
+    const items = (it.triggers||[]).map(t => {
+      const tp = t.trigger_price ? ` <span class="sub">(触发价 ${fmt(t.trigger_price)})</span>` : '';
+      const kindTxt = t.kind === 'buy' ? '买' : t.kind === 'sell' ? '卖' : '看';
+      return `<div class="item ${t.active ? 'active' : ''}">
+        <span class="tag ${t.kind}">${kindTxt}</span>
+        <span>${t.metric}${t.threshold}${tp} → ${t.action}</span>
+      </div>`;
+    }).join('') || '<div class="item sub">暂无价格/股息率触发规则</div>';
+    const dn = it.div_note ? `<div class="item" style="color:#b8860b">⚠ ${it.div_note}</div>` : '';
+    const own = it.note ? `<div class="item sub">※ ${it.note}</div>` : '';
+    return `<div class="rule">
+      <div class="t"><b>${it.name}</b><span class="sub">${it.code}</span></div>
+      ${items}${dn}${own}
+    </div>`;
+  }).join('');
+}
+
+async function load(){
+  $('btnRefresh').textContent = '载入中…';
+  try{
+    const r = await fetch('data/latest.json?t=' + Date.now());
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    STATE = await r.json();
+    $('ts').textContent = (STATE.ts||'').replace('T',' ');
+    $('activeCount').innerHTML = `<span class="pill ${STATE.active_count ? 'on' : ''}">${STATE.active_count}</span>`;
+    $('histDays').textContent = STATE.history_days ?? 0;
+    renderState(STATE);
+  }catch(e){
+    $('alerts').innerHTML = '<div class="empty">读取 data/latest.json 失败：' + e.message +
+      '（首次部署需先让 Actions 跑一次，或本地执行 python3 core.py 生成数据）</div>';
+  }finally{
+    $('btnRefresh').textContent = '重新载入';
+  }
+}
+
+// 面板改了本地持仓后，回到本页自动刷新
+window.addEventListener('focus', () => { if (STATE) renderState(STATE); });
+$('btnRefresh').onclick = load;
+load();
+</script>
+</body>
+</html>
