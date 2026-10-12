@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>股票纪律看板 · 管理面板</title>
+<style>
+  :root{--bg:#f5f6f8;--card:#fff;--line:#e6e8eb;--txt:#1f2329;--sub:#8a9099;--accent:#1f2329;--ok:#0f9d58;--err:#d93025}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);
+    font:14px/1.55 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+  .wrap{max-width:1100px;margin:0 auto;padding:20px 16px 60px}
+  header{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;
+    padding:16px 18px;background:var(--card);border:1px solid var(--line);border-radius:12px}
+  h1{font-size:17px;margin:0}
+  section{margin-top:16px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .sec-hd{padding:12px 18px;border-bottom:1px solid var(--line);font-weight:600;display:flex;
+    justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  .sec-hd small{font-weight:400;color:var(--sub)}
+  .body{padding:14px 18px}
+  label{display:block;font-size:12px;color:var(--sub);margin-bottom:4px}
+  input,select,textarea{width:100%;padding:7px 10px;border:1px solid var(--line);border-radius:8px;
+    font:inherit;background:#fff;color:var(--txt)}
+  textarea{min-height:52px;resize:vertical}
+  button{border:1px solid var(--line);background:#fff;color:var(--txt);border-radius:8px;
+    padding:7px 14px;font-size:13px;cursor:pointer}
+  button:hover{background:#f0f2f5}
+  button.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+  button.danger{color:var(--err)}
+  button.mini{padding:3px 9px;font-size:12px}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+  .row>div{flex:1;min-width:140px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px}
+  .card{border:1px solid var(--line);border-radius:10px;padding:12px;background:#fcfcfd}
+  .card .hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+  .card .hd b{font-size:14px}
+  .rule{border-top:1px dashed var(--line);padding-top:8px;margin-top:8px}
+  .rule .rt{font-size:12px;color:var(--sub);margin-bottom:6px;display:flex;justify-content:space-between}
+  .rrow{display:flex;gap:6px;margin-bottom:6px;align-items:center}
+  .rrow input:first-child{flex:0 0 92px}
+  .rrow input:nth-child(2){flex:1}
+  .msg{margin-top:10px;font-size:13px;padding:8px 12px;border-radius:8px;display:none}
+  .msg.ok{display:block;background:#e7f5ec;color:var(--ok)}
+  .msg.err{display:block;background:#fdecea;color:var(--err)}
+  .msg.info{display:block;background:#eef2f7;color:#4a5568}
+  .units{font-size:11px;color:var(--sub)}
+  table{width:100%;border-collapse:collapse}
+  th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;font-size:13px}
+  th{font-size:12px;color:var(--sub);font-weight:500}
+  a{color:#1a73e8}
+  .tag{font-size:11px;padding:1px 7px;border-radius:20px;background:#eef0f3;color:var(--sub)}
+  .tag.ok{background:#e7f5ec;color:var(--ok)} .tag.err{background:#fdecea;color:var(--err)}
+  footer{margin-top:16px;color:var(--sub);font-size:12px;line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>管理面板</h1>
+    <div>
+      <a href="index.html">← 回看板</a>
+    </div>
+  </header>
+
+  <!-- 1. 连接 -->
+  <section>
+    <div class="sec-hd">1. 连接 GitHub <small>Token 只存在你本机浏览器，不经过任何第三方服务器</small></div>
+    <div class="body">
+      <div class="row">
+        <div><label>owner（用户名）</label><input id="owner" placeholder="senwang16"></div>
+        <div><label>repo（仓库名）</label><input id="repo" placeholder="stock-discipline"></div>
+        <div><label>分支</label><input id="branch" placeholder="main" value="main"></div>
+      </div>
+      <div style="margin-top:10px">
+        <label>Fine-grained PAT（需 Contents 读写、Actions 读写、Workflows 读写）</label>
+        <input id="token" type="password" placeholder="github_pat_...">
+      </div>
+      <div class="row" style="margin-top:12px">
+        <div style="flex:0 0 auto"><button class="primary" id="btnConnect">保存并测试连接</button></div>
+        <div style="flex:0 0 auto"><button id="btnLoadCfg">从仓库载入配置</button></div>
+        <div style="flex:0 0 auto"><button id="btnClear">清除本机保存的连接</button></div>
+      </div>
+      <div class="msg" id="msgConn"></div>
+    </div>
+  </section>
+
+  <!-- 2. 本地持仓 -->
+  <section>
+    <div class="sec-hd">2. 我的持仓 <small>股数与成本只存本机浏览器 localStorage，永不提交到仓库</small></div>
+    <div class="body">
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>标的</th><th style="width:140px">股数</th><th style="width:140px">成本</th></tr></thead>
+          <tbody id="holdTbody"></tbody>
+        </table>
+      </div>
+      <div class="row" style="margin-top:12px">
+        <div style="flex:0 0 auto"><button class="primary" id="btnSaveHold">保存到本机</button></div>
+        <div style="flex:0 0 auto"><button class="danger" id="btnClearHold">清空本机持仓</button></div>
+      </div>
+      <div class="msg" id="msgHold"></div>
+    </div>
+  </section>
+
+  <!-- 3. 标的与规则 -->
+  <section>
+    <div class="sec-hd">3. 标的与交易规则 <small>改动后点「保存到仓库」，Actions 下次运行即生效</small></div>
+    <div class="body">
+      <div class="row">
+        <div style="flex:0 0 auto"><button id="btnAdd">+ 新增标的</button></div>
+        <div style="flex:0 0 auto"><button class="primary" id="btnSaveCfg">保存到仓库 (config.json)</button></div>
+      </div>
+      <div class="msg" id="msgCfg"></div>
+      <div class="grid" id="cfgGrid" style="margin-top:12px"></div>
+    </div>
+  </section>
+
+  <!-- 4. 手动运行 -->
+  <section>
+    <div class="sec-hd">4. 手动运行 <small>立即用当前配置跑一次取数（与每日定时同一套代码）</small></div>
+    <div class="body">
+      <div class="row">
+        <div style="flex:0 0 auto"><button class="primary" id="btnRun">立即运行</button></div>
+        <div style="flex:0 0 auto"><button id="btnRuns">刷新运行历史</button></div>
+      </div>
+      <div class="msg" id="msgRun"></div>
+      <div style="overflow-x:auto;margin-top:12px">
+        <table>
+          <thead><tr><th>时间（北京）</th><th>触发方式</th><th>状态</th><th>链接</th></tr></thead>
+          <tbody id="runsTbody"><tr><td colspan="4" class="units">点「刷新运行历史」查看</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div>规则类型说明：<code>buy_yield</code> 股息率≥ · <code>buy_price</code> 价格≤ · <code>watch_price</code> 观察价格≤ · <code>sell_yield_below</code> 股息率&lt; · <code>sell_price_above</code> 价格≥</div>
+    <div>本工具只做纪律核对，不构成投资建议，不自动交易。</div>
+  </footer>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const LS_CONN = 'sd.conn', LS_HOLD = 'sd.holdings';
+const GH = 'https://api.github.com';
+
+const RULE_DEFS = [
+  {key:'buy_yield',       label:'买入 · 股息率 ≥', unit:'%'},
+  {key:'buy_price',       label:'买入 · 价格 ≤',   unit:'元'},
+  {key:'watch_price',     label:'观察 · 价格 ≤',   unit:'元'},
+  {key:'sell_yield_below',label:'卖出 · 股息率 <', unit:'%'},
+  {key:'sell_price_above',label:'卖出 · 价格 ≥',   unit:'元'},
+];
+const isYield = k => k === 'buy_yield' || k === 'sell_yield_below';
+
+function say(el, text, cls){ const e = $(el); e.textContent = text; e.className = 'msg ' + cls; }
+function b64enc(s){ return btoa(unescape(encodeURIComponent(s))); }
+function b64dec(s){ return decodeURIComponent(escape(atob(s.replace(/\s/g,'')))); }
+
+/* ---------------- 连接 ---------------- */
+function conn(){
+  try{ return JSON.parse(localStorage.getItem(LS_CONN) || '{}') || {}; }catch(e){ return {}; }
+}
+function saveConn(c){ localStorage.setItem(LS_CONN, JSON.stringify(c)); }
+function restoreConn(){
+  const c = conn();
+  $('owner').value = c.owner || ''; $('repo').value = c.repo || '';
+  $('branch').value = c.branch || 'main'; $('token').value = c.token || '';
+}
+
+async function gh(path, opts){
+  const c = conn();
+  if (!c.token || !c.owner || !c.repo) throw new Error('请先填写 owner / repo / token 并保存');
+  const res = await fetch(GH + '/repos/' + c.owner + '/' + c.repo + path, Object.assign({
+    headers: {'Authorization':'Bearer ' + c.token, 'Accept':'application/vnd.github+json'}
+  }, opts || {}));
+  const txt = await res.text();
+  let data = null; try{ data = txt ? JSON.parse(txt) : null; }catch(e){}
+  if (!res.ok) throw new Error((data && data.message) || ('HTTP ' + res.status));
+  return data;
+}
+
+$('btnConnect').onclick = async () => {
+  saveConn({owner:$('owner').value.trim(), repo:$('repo').value.trim(),
+            branch:($('branch').value.trim()||'main'), token:$('token').value.trim()});
+  say('msgConn','连接信息已保存到本机，正在测试…','info');
+  try{
+    const r = await gh('');
+    say('msgConn','连接成功：' + r.full_name + (r.private ? '（私有仓）' : '（公开仓）'),'ok');
+  }catch(e){ say('msgConn','连接失败：' + e.message,'err'); }
+};
+$('btnClear').onclick = () => { localStorage.removeItem(LS_CONN); restoreConn(); say('msgConn','已清除本机保存的连接。','info'); };
+
+/* ---------------- 配置读写 ---------------- */
+let CFG = null, CFG_SHA = null;
+
+async function loadCfg(){
+  say('msgCfg','正在从仓库载入 config.json…','info');
+  try{
+    const c = conn(); const br = c.branch || 'main';
+    const r = await gh('/contents/config.json?ref=' + encodeURIComponent(br));
+    CFG_SHA = r.sha;
+    CFG = JSON.parse(b64dec(r.content));
+    CFG.targets = CFG.targets || [];
+    CFG.settings = CFG.settings || {};
+    renderCfg(); renderHold();
+    say('msgCfg','已载入 ' + CFG.targets.length + ' 个标的。','ok');
+  }catch(e){ say('msgCfg','载入失败：' + e.message,'err'); }
+}
+
+function ruleArr(t, key){ const r = t.rules || (t.rules = {}); if (!Array.isArray(r[key])) r[key] = []; return r[key]; }
+function newTarget(){
+  return {code:'', name:'', category:'', held:false, role:'',
+    rules:{buy_yield:[[0.05,'进入观察区']]}};
+}
+
+function renderCfg(){
+  $('cfgGrid').innerHTML = CFG.targets.map((t, i) => {
+    const rulesHtml = RULE_DEFS.map(d => {
+      const arr = ruleArr(t, d.key);
+      const rows = arr.map((it, j) => {
+        const raw = Number(it[0]) || 0;
+        const shown = isYield(d.key) ? +(raw * 100).toFixed(3) : raw;
+        return `<div class="rrow">
+          <input type="number" step="any" value="${shown}" data-i="${i}" data-k="${d.key}" data-j="${j}" data-f="v">
+          <input type="text" value="${it[1] || ''}" data-i="${i}" data-k="${d.key}" data-j="${j}" data-f="a" placeholder="提醒动作">
+          <button class="mini danger" data-del="${i}|${d.key}|${j}">×</button>
+        </div>`;
+      }).join('');
+      if (!arr.length && d.key === 'buy_yield') { /* 允许为空 */ }
+      return `<div class="rule">
+        <div class="rt"><span>${d.label} <span class="units">(${d.unit})</span></span>
+          <button class="mini" data-add="${i}|${d.key}">+ 加一条</button></div>
+        ${rows || '<div class="units">无</div>'}
+      </div>`;
+    }).join('');
+
+    return `<div class="card">
+      <div class="hd">
+        <b>${t.name || '（未命名）'}</b>
+        <button class="mini danger" data-rmtarget="${i}">删除标的</button>
+      </div>
+      <div class="row">
+        <div><label>代码</label><input value="${t.code||''}" data-i="${i}" data-f="code"></div>
+        <div><label>名称</label><input value="${t.name||''}" data-i="${i}" data-f="name"></div>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <div><label>分类</label><input value="${t.category||''}" data-i="${i}" data-f="category"></div>
+        <div><label>角色说明</label><input value="${t.role||''}" data-i="${i}" data-f="role"></div>
+      </div>
+      <div style="margin-top:8px">
+        <label><input type="checkbox" style="width:auto" data-i="${i}" data-f="held" ${t.held?'checked':''}> 计入「持仓」（勾选后出现在看板持仓表）</label>
+      </div>
+      ${rulesHtml}
+      <div class="rule">
+        <div class="rt"><span>备注 note</span></div>
+        <textarea data-i="${i}" data-f="note">${(t.rules && t.rules.note) || ''}</textarea>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// 统一的事件委托
+$('cfgGrid').addEventListener('input', e => {
+  const el = e.target; const i = el.dataset.i; if (i === undefined) return;
+  const t = CFG.targets[+i]; if (!t) return;
+  if (el.dataset.f === 'v' || el.dataset.f === 'a'){
+    const arr = ruleArr(t, el.dataset.k); const j = +el.dataset.j; if (!arr[j]) return;
+    if (el.dataset.f === 'a') arr[j][1] = el.value;
+    else {
+      const v = Number(el.value) || 0;
+      arr[j][0] = isYield(el.dataset.k) ? v / 100 : v;
+    }
+    return;
+  }
+  if (el.dataset.f === 'held'){ t.held = el.checked; renderHold(); return; }
+  if (el.dataset.f === 'note'){ t.rules = t.rules || {}; t.rules.note = el.value; return; }
+  t[el.dataset.f] = el.value;
+});
+$('cfgGrid').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  if (b.dataset.rmtarget !== undefined){ CFG.targets.splice(+b.dataset.rmtarget, 1); renderCfg(); renderHold(); }
+  else if (b.dataset.add){ const [i,k] = b.dataset.add.split('|'); ruleArr(CFG.targets[+i], k).push([isYield(k)?0.05:1, '']); renderCfg(); }
+  else if (b.dataset.del){ const [i,k,j] = b.dataset.del.split('|'); ruleArr(CFG.targets[+i], k).splice(+j, 1); renderCfg(); }
+});
+
+$('btnAdd').onclick = () => { CFG = CFG || {targets:[], settings:{}}; CFG.targets.push(newTarget()); renderCfg(); };
+$('btnLoadCfg').onclick = loadCfg;
+
+$('btnSaveCfg').onclick = async () => {
+  if (!CFG) return say('msgCfg','还没载入配置','err');
+  const bad = CFG.targets.filter(t => !t.code || !t.name);
+  if (bad.length) return say('msgCfg','有标的缺代码或名称，请补全','err');
+  say('msgCfg','正在提交到仓库…','info');
+  try{
+    const c = conn(); const br = c.branch || 'main';
+    const content = JSON.stringify(CFG, null, 2) + '\n';
+    const r = await gh('/contents/config.json', {
+      method:'PUT',
+      body: JSON.stringify({message:'chore(config): 更新标的与规则', content:b64enc(content), sha:CFG_SHA, branch:br})
+    });
+    CFG_SHA = r.content.sha;
+    say('msgCfg','已提交到仓库（' + r.commit.sha.slice(0,7) + '）。下次 Actions 运行即生效。','ok');
+  }catch(e){ say('msgCfg','提交失败：' + e.message,'err'); }
+};
+
+/* ---------------- 本地持仓 ---------------- */
+function localHold(){ try{ return JSON.parse(localStorage.getItem(LS_HOLD)||'{}')||{}; }catch(e){ return {}; } }
+
+function renderHold(){
+  const lh = localHold();
+  const held = (CFG ? CFG.targets : []).filter(t => t.held);
+  if (!held.length){ $('holdTbody').innerHTML = '<tr><td colspan="3" class="units">先在下面勾选哪些标的计入「持仓」</td></tr>'; return; }
+  $('holdTbody').innerHTML = held.map(t => {
+    const p = lh[t.code] || {};
+    return `<tr>
+      <td><b>${t.name||t.code}</b> <span class="units">${t.code}</span></td>
+      <td><input type="number" step="100" data-hc="${t.code}" data-hf="shares" value="${p.shares||''}" placeholder="股数"></td>
+      <td><input type="number" step="any" data-hc="${t.code}" data-hf="cost" value="${p.cost||''}" placeholder="成本"></td>
+    </tr>`;
+  }).join('');
+}
+$('holdTbody').addEventListener('input', e => {
+  const el = e.target; const code = el.dataset.hc; if (!code) return;
+  const lh = localHold(); lh[code] = lh[code] || {};
+  const v = el.value === '' ? null : Number(el.value);
+  lh[code][el.dataset.hf] = v;
+  if (!lh[code].shares && !lh[code].cost) delete lh[code];
+  localStorage.setItem(LS_HOLD, JSON.stringify(lh));
+});
+$('btnSaveHold').onclick = () => say('msgHold','已保存到本机浏览器（输入即保存，不会提交到仓库）。','ok');
+$('btnClearHold').onclick = () => { localStorage.removeItem(LS_HOLD); renderHold(); say('msgHold','已清空本机持仓。','info'); };
+
+/* ---------------- 运行 ---------------- */
+$('btnRun').onclick = async () => {
+  say('msgRun','正在触发运行…','info');
+  try{
+    const c = conn(); const br = c.branch || 'main';
+    await gh('/actions/workflows/update.yml/dispatches', {
+      method:'POST', body: JSON.stringify({ref:br})
+    });
+    say('msgRun','已触发。约 1 分钟后刷新「运行历史」查看结果。','ok');
+  }catch(e){ say('msgRun','触发失败：' + e.message,'err'); }
+};
+
+$('btnRuns').onclick = async () => {
+  say('msgRun','正在读取运行历史…','info');
+  try{
+    const r = await gh('/actions/runs?per_page=10');
+    const rows = (r.workflow_runs||[]).filter(x => x.name === 'update' || x.path.includes('update.yml'));
+    const list = rows.length ? rows : (r.workflow_runs||[]);
+    if (!list.length){ $('runsTbody').innerHTML = '<tr><td colspan="4" class="units">还没有运行记录</td></tr>'; }
+    else {
+      $('runsTbody').innerHTML = list.map(x => {
+        const t = new Date(x.created_at).toLocaleString('zh-CN', {timeZone:'Asia/Shanghai'});
+        const cls = x.conclusion === 'success' ? 'ok' : (x.conclusion ? 'err' : '');
+        return `<tr><td>${t}</td><td>${x.event}</td>
+          <td><span class="tag ${cls}">${x.conclusion || x.status}</span></td>
+          <td><a href="${x.html_url}" target="_blank" rel="noopener">查看</a></td></tr>`;
+      }).join('');
+    }
+    say('msgRun','已更新。','ok');
+  }catch(e){ say('msgRun','读取失败：' + e.message,'err'); }
+};
+
+/* ---------------- 启动 ---------------- */
+restoreConn();
+(function init(){
+  // 没连仓库时，先用内置的空配置渲染，至少能填本地持仓
+  CFG = {targets: [], settings: {}, };
+  renderCfg(); renderHold();
+  const c = conn();
+  if (c.token && c.owner && c.repo) loadCfg();
+  else say('msgCfg','填写连接信息后点「从仓库载入配置」开始编辑。','info');
+})();
+</script>
+</body>
+</html>
