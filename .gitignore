@@ -1,0 +1,12 @@
+# Python
+__pycache__/
+*.pyc
+
+# 本地调试产物（不参与部署）
+*.db
+data/market.db
+app.py
+
+# 系统
+.DS_Store
+Thumbs.db
