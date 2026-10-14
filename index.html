@@ -52,9 +52,20 @@
   .tag.buy{background:#fdecea;color:var(--buy)}
   .tag.sell{background:#e8f0fe;color:var(--sell)}
   .tag.watch{background:#fdf3d8;color:var(--watch)}
-  .alerts{padding:14px 18px;display:grid;gap:8px}
-  .alert{border-left:3px solid var(--warn);background:var(--warnbg);padding:9px 12px;border-radius:6px;font-size:13px}
+  .alerts{display:block}
+  .amod{padding:12px 18px;border-top:1px solid var(--line)}
+  .amod:first-child{border-top:none}
+  .amod-hd{display:flex;align-items:center;gap:8px;font-weight:600;font-size:13px;margin-bottom:9px}
+  .amod-hd .dot{width:8px;height:8px;border-radius:50%;background:var(--sub);flex:0 0 auto}
+  .amod-hd .dot.buy{background:var(--buy)}
+  .amod-hd .dot.watch{background:var(--watch)}
+  .amod-hd .dot.sell{background:var(--sell)}
+  .amod-hd .cnt{margin-left:auto;font-weight:400;font-size:12px;color:var(--sub)}
+  .alist{display:grid;gap:8px}
+  .alert{border-left:3px solid var(--buy);background:#fdecea;padding:9px 12px;border-radius:6px;font-size:13px}
+  .alert.watch{border-left-color:var(--warn);background:var(--warnbg)}
   .alert.sell{border-left-color:var(--sell);background:#eff4fe}
+  .none{font-size:12.5px;color:var(--sub)}
   .empty{padding:22px 18px;color:var(--sub);font-size:13px}
   .hint{background:#eef2f7;border-radius:8px;padding:8px 12px;margin:0 18px 12px;font-size:12px;color:#4a5568}
   footer{margin-top:16px;color:var(--sub);font-size:12px;line-height:1.8;padding:0 4px}
@@ -79,7 +90,7 @@
   </header>
 
   <section>
-    <div class="sec-hd">触发提醒 <span>仅列出当前已生效的条件</span></div>
+    <div class="sec-hd">触发提醒 <span>按类型分模块展示，仅列出当前已生效的条件</span></div>
     <div id="alerts" class="alerts"></div>
   </section>
 
@@ -139,17 +150,32 @@ function localHoldings(){
 
 let STATE = null;
 
+const ALERT_MODULES = [
+  {kind: 'buy',   title: '买入提醒'},
+  {kind: 'watch', title: '列入观察'},
+  {kind: 'sell',  title: '卖出提醒'},
+];
+
 function renderAlerts(st){
-  const rows = [];
-  st.targets.forEach(it => (it.triggers || []).forEach(t => {
-    if (t.active) rows.push({it, t});
+  const groups = {buy: [], watch: [], sell: []};
+  (st.targets || []).forEach(it => (it.triggers || []).forEach(t => {
+    if (t.active && groups[t.kind]) groups[t.kind].push({it, t});
   }));
-  if (!rows.length){ $('alerts').innerHTML = '<div class="empty">当前没有任何条件触发。</div>'; return; }
-  $('alerts').innerHTML = rows.map(({it,t}) =>
-    `<div class="alert ${t.kind === 'sell' ? 'sell' : ''}">
-      <b>${it.name}</b>（${it.code}）现价 ${fmt(it.price)}　
-      条件 ${t.metric}${t.threshold} 已满足　→　<b>${t.action}</b>
-    </div>`).join('');
+
+  $('alerts').innerHTML = ALERT_MODULES.map(m => {
+    const list = groups[m.kind];
+    const body = list.length
+      ? '<div class="alist">' + list.map(({it, t}) =>
+          `<div class="alert ${m.kind}">
+            <b>${it.name}</b>（${it.code}）现价 ${fmt(it.price)}　
+            条件 ${t.metric}${t.threshold} 已满足　→　<b>${t.action}</b>
+          </div>`).join('') + '</div>'
+      : '<div class="none">无</div>';
+    return `<div class="amod">
+      <div class="amod-hd"><span class="dot ${m.kind}"></span>${m.title}<span class="cnt">${list.length} 条</span></div>
+      ${body}
+    </div>`;
+  }).join('');
 }
 
 function triggerCell(it){
@@ -234,7 +260,10 @@ async function load(silent){
     if (!r.ok) throw new Error('HTTP ' + r.status);
     STATE = await r.json();
     $('ts').textContent = (STATE.ts||'').replace('T',' ');
-    $('activeCount').innerHTML = `<span class="pill ${STATE.active_count ? 'on' : ''}">${STATE.active_count}</span>`;
+    const g = {buy: 0, watch: 0, sell: 0};
+    (STATE.targets||[]).forEach(it => (it.triggers||[]).forEach(t => { if (t.active && g[t.kind] !== undefined) g[t.kind]++; }));
+    $('activeCount').innerHTML = `<span class="pill ${STATE.active_count ? 'on' : ''}">${STATE.active_count}</span>`
+      + ` <span class="sub">买 ${g.buy} · 看 ${g.watch} · 卖 ${g.sell}</span>`;
     $('histDays').textContent = STATE.history_days ?? 0;
     renderState(STATE);
   }catch(e){
