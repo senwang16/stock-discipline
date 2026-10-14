@@ -32,6 +32,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # 拉全历史，push 前 rebase 才稳
+          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -48,7 +51,16 @@ jobs:
           git add data/
           if git diff --staged --quiet; then
             echo "data/ 无变化，跳过提交"
-          else
-            git commit -m "chore(data): 更新行情与触发快照 $(date -u +%Y-%m-%dT%H:%MZ)"
-            git push
+            exit 0
           fi
+          git commit -m "chore(data): 更新行情与触发快照 $(date -u +%Y-%m-%dT%H:%MZ)"
+          # main 可能在本次运行期间被其他提交推进，直接 push 会被拒（non-fast-forward）。
+          # push 前先 rebase，并重试几次，避免因竞态导致整次运行失败。
+          ok=0
+          for i in 1 2 3 4 5; do
+            if git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && git push; then
+              echo "已推送（第 $i 次尝试）"; ok=1; break
+            fi
+            echo "push 失败，5 秒后重试…"; sleep 5
+          done
+          if [ "$ok" != "1" ]; then echo "push 连续失败，放弃"; exit 1; fi
