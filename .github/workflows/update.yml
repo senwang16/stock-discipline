@@ -9,6 +9,12 @@ on:
     # cron 用 UTC。北京时间 = UTC + 8。
     - cron: "40 7 * * 1-5"    # 北京 15:40（收盘后）
     - cron: "0 11 * * 1-5"    # 北京 19:00（晚间补一次，防上游延迟）
+  # 改了配置或核心逻辑后立即重算，不用等下一次定时。
+  # 只匹配这两个文件，因此本工作流自己提交 data/ 时不会被再次触发，不会循环。
+  push:
+    paths:
+      - config.json
+      - core.py
   workflow_dispatch:
 
 permissions:
