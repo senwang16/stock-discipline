@@ -1,6 +1,6 @@
 {
- "ts": "2026-10-26T17:10:33",
- "quote_date": "2026-10-26",
+ "ts": "2026-10-27T13:32:23",
+ "quote_date": "2026-10-27",
  "settings": {
   "position_cap": 0.2,
   "cash": null,
@@ -14,14 +14,14 @@
    "category": "银行",
    "held": true,
    "role": "核心收息底仓",
-   "price": 8.58,
-   "change_pct": 3.13,
-   "quote_time": "20261026161450",
+   "price": 8.62,
+   "change_pct": 0.47,
+   "quote_time": "20261027161452",
    "div_year": "2025",
    "div_annual": 0.3103,
    "div_ttm": 0.4614,
-   "yield_annual": 3.62,
-   "yield_ttm": 5.38,
+   "yield_annual": 3.6,
+   "yield_ttm": 5.35,
    "triggers": [
     {
      "kind": "buy",
@@ -45,7 +45,7 @@
      "threshold": "<3.00%",
      "action": "估值偏高，评估是否部分止盈",
      "active": false,
-     "trigger_price": 10.35
+     "trigger_price": 10.34
     }
    ],
    "next_trigger": {
@@ -61,14 +61,14 @@
    "category": "银行",
    "held": true,
    "role": "打新门票+吃息",
-   "price": 11.3,
-   "change_pct": 0.89,
-   "quote_time": "20261026161500",
+   "price": 11.47,
+   "change_pct": 1.5,
+   "quote_time": "20261027161500",
    "div_year": "2025",
    "div_annual": 0.596,
    "div_ttm": 0.609,
-   "yield_annual": 5.27,
-   "yield_ttm": 5.39,
+   "yield_annual": 5.2,
+   "yield_ttm": 5.31,
    "triggers": [
     {
      "kind": "buy",
@@ -76,7 +76,7 @@
      "threshold": "≥5.50%",
      "action": "评估是否加仓打新底仓",
      "active": false,
-     "trigger_price": 10.83
+     "trigger_price": 10.84
     },
     {
      "kind": "buy",
@@ -100,12 +100,12 @@
      "threshold": "<4.00%",
      "action": "收息性价比下降",
      "active": false,
-     "trigger_price": 14.89
+     "trigger_price": 14.91
     }
    ],
    "next_trigger": {
     "target_yield": 0.055,
-    "price": 10.83
+    "price": 10.84
    },
    "note": null,
    "div_note": null
@@ -116,9 +116,9 @@
    "category": "周期",
    "held": true,
    "role": "周期弹性仓，必须止盈",
-   "price": 2.08,
-   "change_pct": 0.48,
-   "quote_time": "20261026161446",
+   "price": 2.04,
+   "change_pct": -1.92,
+   "quote_time": "20261027161444",
    "div_year": "2024",
    "div_annual": 0.002,
    "div_ttm": 0.0,
@@ -168,14 +168,14 @@
    "category": "汽车",
    "held": true,
    "role": "困境反转试验仓，按网格补",
-   "price": 14.18,
-   "change_pct": 2.01,
-   "quote_time": "20261026161442",
+   "price": 14.2,
+   "change_pct": 0.14,
+   "quote_time": "20261027161440",
    "div_year": "2025",
    "div_annual": 0.35,
    "div_ttm": 0.35,
-   "yield_annual": 2.47,
-   "yield_ttm": 2.47,
+   "yield_annual": 2.46,
+   "yield_ttm": 2.46,
    "triggers": [
     {
      "kind": "buy",
@@ -220,14 +220,14 @@
    "category": "新能源车",
    "held": false,
    "role": "成长观察，非收息；仅价格网格",
-   "price": 82.4,
-   "change_pct": 1.2,
-   "quote_time": "20261026161415",
+   "price": 82.01,
+   "change_pct": -0.47,
+   "quote_time": "20261027161445",
    "div_year": "2025",
    "div_annual": 0.358,
    "div_ttm": 0.358,
-   "yield_annual": 0.43,
-   "yield_ttm": 0.43,
+   "yield_annual": 0.44,
+   "yield_ttm": 0.44,
    "triggers": [
     {
      "kind": "buy",
@@ -264,14 +264,14 @@
    "category": "银行",
    "held": false,
    "role": "",
-   "price": 8.25,
-   "change_pct": 2.48,
-   "quote_time": "20261026161436",
+   "price": 8.34,
+   "change_pct": 1.09,
+   "quote_time": "20261027161459",
    "div_year": "2025",
    "div_annual": 0.3247,
    "div_ttm": 0.3247,
-   "yield_annual": 3.94,
-   "yield_ttm": 3.94,
+   "yield_annual": 3.89,
+   "yield_ttm": 3.89,
    "triggers": [
     {
      "kind": "buy",
@@ -279,7 +279,7 @@
      "threshold": "≥4.50%",
      "action": "进入观察区",
      "active": false,
-     "trigger_price": 7.22
+     "trigger_price": 7.21
     },
     {
      "kind": "buy",
@@ -287,12 +287,12 @@
      "threshold": "≥5.00%",
      "action": "重点买入区",
      "active": false,
-     "trigger_price": 6.5
+     "trigger_price": 6.49
     }
    ],
    "next_trigger": {
     "target_yield": 0.045,
-    "price": 7.22
+    "price": 7.21
    },
    "note": null,
    "div_note": null
@@ -303,14 +303,14 @@
    "category": "银行",
    "held": false,
    "role": "",
-   "price": 7.33,
-   "change_pct": 1.95,
-   "quote_time": "20261026161443",
+   "price": 7.4,
+   "change_pct": 0.95,
+   "quote_time": "20261027161444",
    "div_year": "2025",
    "div_annual": 0.2495,
    "div_ttm": 0.3792,
-   "yield_annual": 3.4,
-   "yield_ttm": 5.17,
+   "yield_annual": 3.37,
+   "yield_ttm": 5.12,
    "triggers": [
     {
      "kind": "buy",
@@ -318,12 +318,12 @@
      "threshold": "≥5.00%",
      "action": "纳入银行股比价",
      "active": false,
-     "trigger_price": 4.98
+     "trigger_price": 4.99
     }
    ],
    "next_trigger": {
     "target_yield": 0.05,
-    "price": 4.98
+    "price": 4.99
    },
    "note": null,
    "div_note": "两口径差异大（除息节奏错位），触发判断以年度口径为准"
@@ -334,14 +334,14 @@
    "category": "银行",
    "held": false,
    "role": "",
-   "price": 11.61,
-   "change_pct": 2.74,
-   "quote_time": "20261026161500",
+   "price": 11.78,
+   "change_pct": 1.46,
+   "quote_time": "20261027161458",
    "div_year": "2025",
    "div_annual": 0.3887,
    "div_ttm": 0.3887,
-   "yield_annual": 3.35,
-   "yield_ttm": 3.35,
+   "yield_annual": 3.3,
+   "yield_ttm": 3.3,
    "triggers": [
     {
      "kind": "buy",
@@ -349,12 +349,12 @@
      "threshold": "≥5.00%",
      "action": "纳入银行股比价",
      "active": false,
-     "trigger_price": 7.78
+     "trigger_price": 7.77
     }
    ],
    "next_trigger": {
     "target_yield": 0.05,
-    "price": 7.78
+    "price": 7.77
    },
    "note": null,
    "div_note": null
@@ -365,14 +365,14 @@
    "category": "银行",
    "held": false,
    "role": "",
-   "price": 7.0,
-   "change_pct": 1.01,
-   "quote_time": "20261026161437",
+   "price": 7.02,
+   "change_pct": 0.29,
+   "quote_time": "20261027161435",
    "div_year": "2025",
    "div_annual": 0.2263,
    "div_ttm": 0.2263,
-   "yield_annual": 3.23,
-   "yield_ttm": 3.23,
+   "yield_annual": 3.22,
+   "yield_ttm": 3.22,
    "triggers": [
     {
      "kind": "buy",
@@ -396,9 +396,9 @@
    "category": "电力",
    "held": false,
    "role": "",
-   "price": 29.86,
-   "change_pct": 1.39,
-   "quote_time": "20261026161450",
+   "price": 29.83,
+   "change_pct": -0.1,
+   "quote_time": "20261027161453",
    "div_year": "2025",
    "div_annual": 1.0,
    "div_ttm": 1.0,
@@ -411,7 +411,7 @@
      "threshold": "≥4.00%",
      "action": "进入观察区",
      "active": false,
-     "trigger_price": 25.01
+     "trigger_price": 24.98
     },
     {
      "kind": "buy",
@@ -419,12 +419,12 @@
      "threshold": "≥4.50%",
      "action": "重点买入区",
      "active": false,
-     "trigger_price": 22.23
+     "trigger_price": 22.21
     }
    ],
    "next_trigger": {
     "target_yield": 0.04,
-    "price": 25.01
+    "price": 24.98
    },
    "note": null,
    "div_note": null
@@ -435,13 +435,13 @@
    "category": "电力",
    "held": false,
    "role": "",
-   "price": 9.47,
-   "change_pct": 1.39,
-   "quote_time": "20261026161434",
+   "price": 9.5,
+   "change_pct": 0.32,
+   "quote_time": "20261027161458",
    "div_year": "2025",
    "div_annual": 0.18,
    "div_ttm": 0.2,
-   "yield_annual": 1.9,
+   "yield_annual": 1.89,
    "yield_ttm": 2.11,
    "triggers": [
     {
@@ -450,7 +450,7 @@
      "threshold": "≥3.00%",
      "action": "进入观察区",
      "active": false,
-     "trigger_price": 6.0
+     "trigger_price": 5.98
     },
     {
      "kind": "buy",
@@ -458,12 +458,12 @@
      "threshold": "≥3.50%",
      "action": "重点买入区",
      "active": false,
-     "trigger_price": 5.14
+     "trigger_price": 5.13
     }
    ],
    "next_trigger": {
     "target_yield": 0.03,
-    "price": 6.0
+    "price": 5.98
    },
    "note": null,
    "div_note": null
@@ -474,14 +474,14 @@
    "category": "电力",
    "held": false,
    "role": "",
-   "price": 10.33,
-   "change_pct": 1.77,
-   "quote_time": "20261026161450",
+   "price": 10.44,
+   "change_pct": 1.06,
+   "quote_time": "20261027161447",
    "div_year": "2025",
    "div_annual": 0.205,
    "div_ttm": 0.205,
-   "yield_annual": 1.98,
-   "yield_ttm": 1.98,
+   "yield_annual": 1.96,
+   "yield_ttm": 1.96,
    "triggers": [
     {
      "kind": "buy",
@@ -489,12 +489,12 @@
      "threshold": "≥3.50%",
      "action": "进入观察区",
      "active": false,
-     "trigger_price": 5.84
+     "trigger_price": 5.85
     }
    ],
    "next_trigger": {
     "target_yield": 0.035,
-    "price": 5.84
+    "price": 5.85
    },
    "note": null,
    "div_note": null
@@ -505,14 +505,14 @@
    "category": "能源",
    "held": false,
    "role": "",
-   "price": 5.56,
-   "change_pct": 3.54,
-   "quote_time": "20261026161459",
+   "price": 5.51,
+   "change_pct": -0.9,
+   "quote_time": "20261027161457",
    "div_year": "2025",
    "div_annual": 0.2,
    "div_ttm": 0.217,
-   "yield_annual": 3.6,
-   "yield_ttm": 3.9,
+   "yield_annual": 3.63,
+   "yield_ttm": 3.94,
    "triggers": [
     {
      "kind": "buy",
@@ -544,14 +544,14 @@
    "category": "能源",
    "held": false,
    "role": "",
-   "price": 35.16,
-   "change_pct": 4.27,
-   "quote_time": "20261026161457",
+   "price": 35.26,
+   "change_pct": 0.28,
+   "quote_time": "20261027161456",
    "div_year": "2025",
    "div_annual": 1.1449,
    "div_ttm": 1.292,
-   "yield_annual": 3.26,
-   "yield_ttm": 3.67,
+   "yield_annual": 3.25,
+   "yield_ttm": 3.66,
    "triggers": [
     {
      "kind": "buy",
@@ -578,5 +578,5 @@
    "div_note": null
   }
  ],
- "history_days": 11
+ "history_days": 12
 }
