@@ -1,5 +1,5 @@
 {
- "ts": "2026-10-29T14:38:05",
+ "ts": "2026-10-29T17:21:02",
  "quote_date": "2026-10-29",
  "settings": {
   "position_cap": 0.2,
@@ -438,11 +438,11 @@
    "price": 9.94,
    "change_pct": 2.9,
    "quote_time": "20261029161459",
-   "div_year": "2025",
-   "div_annual": 0.18,
-   "div_ttm": 0.2,
-   "yield_annual": 1.81,
-   "yield_ttm": 2.01,
+   "div_year": null,
+   "div_annual": null,
+   "div_ttm": null,
+   "yield_annual": null,
+   "yield_ttm": null,
    "triggers": [
     {
      "kind": "buy",
@@ -450,7 +450,7 @@
      "threshold": "≥3.00%",
      "action": "进入观察区",
      "active": false,
-     "trigger_price": 6.0
+     "trigger_price": null
     },
     {
      "kind": "buy",
@@ -458,13 +458,10 @@
      "threshold": "≥3.50%",
      "action": "重点买入区",
      "active": false,
-     "trigger_price": 5.14
+     "trigger_price": null
     }
    ],
-   "next_trigger": {
-    "target_yield": 0.03,
-    "price": 6.0
-   },
+   "next_trigger": null,
    "note": null,
    "div_note": null
   },

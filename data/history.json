@@ -872,8 +872,8 @@
    {
     "date": "2026-10-29",
     "price": 9.94,
-    "yield_annual": 1.81,
-    "yield_ttm": 2.01
+    "yield_annual": null,
+    "yield_ttm": null
    }
   ],
   "600025": [
