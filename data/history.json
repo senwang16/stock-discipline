@@ -13,7 +13,8 @@
   "2026-10-26",
   "2026-10-27",
   "2026-10-28",
-  "2026-10-29"
+  "2026-10-29",
+  "2026-10-30"
  ],
  "series": {
   "601398": [
@@ -100,6 +101,12 @@
     "price": 8.78,
     "yield_annual": 3.53,
     "yield_ttm": 5.26
+   },
+   {
+    "date": "2026-10-30",
+    "price": 8.75,
+    "yield_annual": 3.55,
+    "yield_ttm": 5.27
    }
   ],
   "000001": [
@@ -186,6 +193,12 @@
     "price": 11.54,
     "yield_annual": 5.16,
     "yield_ttm": 5.28
+   },
+   {
+    "date": "2026-10-30",
+    "price": 11.64,
+    "yield_annual": 5.12,
+    "yield_ttm": 5.23
    }
   ],
   "600010": [
@@ -270,6 +283,12 @@
    {
     "date": "2026-10-29",
     "price": 2.0,
+    "yield_annual": 0.1,
+    "yield_ttm": null
+   },
+   {
+    "date": "2026-10-30",
+    "price": 1.98,
     "yield_annual": 0.1,
     "yield_ttm": null
    }
@@ -358,6 +377,12 @@
     "price": 14.11,
     "yield_annual": 2.48,
     "yield_ttm": 2.48
+   },
+   {
+    "date": "2026-10-30",
+    "price": 14.02,
+    "yield_annual": 2.5,
+    "yield_ttm": 2.5
    }
   ],
   "601328": [
@@ -444,6 +469,12 @@
     "price": 8.56,
     "yield_annual": 3.79,
     "yield_ttm": 3.79
+   },
+   {
+    "date": "2026-10-30",
+    "price": 8.63,
+    "yield_annual": 3.76,
+    "yield_ttm": 3.76
    }
   ],
   "601288": [
@@ -530,6 +561,12 @@
     "price": 7.56,
     "yield_annual": 3.3,
     "yield_ttm": 5.02
+   },
+   {
+    "date": "2026-10-30",
+    "price": 7.48,
+    "yield_annual": 3.34,
+    "yield_ttm": 5.07
    }
   ],
   "601939": [
@@ -616,6 +653,12 @@
     "price": 12.04,
     "yield_annual": 3.23,
     "yield_ttm": 3.23
+   },
+   {
+    "date": "2026-10-30",
+    "price": 11.98,
+    "yield_annual": 3.24,
+    "yield_ttm": 3.24
    }
   ],
   "601988": [
@@ -702,6 +745,12 @@
     "price": 7.16,
     "yield_annual": 3.16,
     "yield_ttm": 3.16
+   },
+   {
+    "date": "2026-10-30",
+    "price": 7.09,
+    "yield_annual": 3.19,
+    "yield_ttm": 3.19
    }
   ],
   "600900": [
@@ -788,6 +837,12 @@
     "price": 29.99,
     "yield_annual": 3.33,
     "yield_ttm": 3.33
+   },
+   {
+    "date": "2026-10-30",
+    "price": 29.74,
+    "yield_annual": 3.36,
+    "yield_ttm": 3.36
    }
   ],
   "601985": [
@@ -874,6 +929,12 @@
     "price": 9.94,
     "yield_annual": null,
     "yield_ttm": null
+   },
+   {
+    "date": "2026-10-30",
+    "price": 9.8,
+    "yield_annual": 1.84,
+    "yield_ttm": 2.04
    }
   ],
   "600025": [
@@ -960,6 +1021,12 @@
     "price": 10.71,
     "yield_annual": 1.91,
     "yield_ttm": 1.91
+   },
+   {
+    "date": "2026-10-30",
+    "price": 10.69,
+    "yield_annual": 1.92,
+    "yield_ttm": 1.92
    }
   ],
   "600028": [
@@ -1046,6 +1113,12 @@
     "price": 5.62,
     "yield_annual": 3.56,
     "yield_ttm": 3.86
+   },
+   {
+    "date": "2026-10-30",
+    "price": 5.9,
+    "yield_annual": 3.39,
+    "yield_ttm": 3.68
    }
   ],
   "600938": [
@@ -1132,6 +1205,12 @@
     "price": 35.42,
     "yield_annual": 3.23,
     "yield_ttm": 3.65
+   },
+   {
+    "date": "2026-10-30",
+    "price": 35.97,
+    "yield_annual": 3.18,
+    "yield_ttm": 3.59
    }
   ],
   "002594": [
@@ -1206,6 +1285,12 @@
     "price": 82.5,
     "yield_annual": 0.43,
     "yield_ttm": 0.43
+   },
+   {
+    "date": "2026-10-30",
+    "price": 81.65,
+    "yield_annual": 0.44,
+    "yield_ttm": 0.44
    }
   ]
  }
